@@ -30,7 +30,7 @@ export const employeeSlice = createSlice({
       state.Skills = action.payload;
     },
     addSalaryDetails: (state, action) => {
-      state.SalaryDetails = action.payload;
+      state.SalaryDetails = Number(action.payload);
     },
     addAddress: (state, action) => {
       state.Address = action.payload;
