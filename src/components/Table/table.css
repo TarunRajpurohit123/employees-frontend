@@ -5,3 +5,15 @@
 .E__table > div {
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
+.act__delete{
+  color: red !important;
+  font-weight: bolder !important;
+}
+.act__edit{
+  color: green !important;
+  font-weight: bolder !important;
+}
+.acts{
+  cursor: pointer !important;
+  margin-left: 0.3rem !important;
+}
