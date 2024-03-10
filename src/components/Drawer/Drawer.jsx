@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import { Button, Drawer } from 'antd';
-import { useSelector } from 'react-redux';
-const EDrawer = ({label,children,btnStyles,heading}) => {
-  const [open, setOpen] = useState(false);
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleDrawer } from '../../store/slices/drawerSlice';
+const EDrawer = ({label,children,btnStyles,heading,isOpen}) => {
+  const dispatch = useDispatch();
   const showDrawer = () => {
-    setOpen(true);
+    dispatch(toggleDrawer(true))
   };
   const onClose = () => {
-    setOpen(false);
+    dispatch(toggleDrawer(false))
   };
   return (
     <>
       <Button style={btnStyles} type="primary" onClick={showDrawer}>
         {label}
       </Button>
-      <Drawer  title={heading} onClose={onClose} open={open}>
+      <Drawer  title={heading} onClose={onClose} open={isOpen}>
         {children}
       </Drawer>
     </>

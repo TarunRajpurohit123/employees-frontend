@@ -42,10 +42,16 @@ export const employeeSlice = createSlice({
       state.SalaryDetails = null;
       state.Address = null;
     },
+    updateEmployeeState: (state, action) => {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addEmployeeName,addEmployeeStatus,addJoiningDate,addBirthDate,addSkills,addSalaryDetails,addAddress,clearAll } = employeeSlice.actions;
+export const { addEmployeeName,addEmployeeStatus,updateEmployeeState,addJoiningDate,addBirthDate,addSkills,addSalaryDetails,addAddress,clearAll } = employeeSlice.actions;
 
 export default employeeSlice.reducer;
