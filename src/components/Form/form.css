@@ -1,0 +1,4 @@
+.form__mainBtn{
+    background-color: var(--primary) !important;
+    color: var(--pure) !important;
+}

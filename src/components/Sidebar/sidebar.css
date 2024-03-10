@@ -1,0 +1,12 @@
+.E__sidebar {
+  width: 15% !important;
+  height: 100vh !important;
+}
+
+/* selected link styles */
+:where(.E__sidebar) :where(.ant-menu-item-selected) {
+  background: var(--primary) !important;
+  color: var(--pure) !important;
+}
+
+

@@ -1,0 +1,8 @@
+.E__fluid{
+    width: 100%;
+}
+.E__main__container{
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
