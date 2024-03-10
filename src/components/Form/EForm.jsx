@@ -29,6 +29,7 @@ const EForm = () => {
   });
   const dispatch = useDispatch();
   const [allStatus,setAllStatus] = useState([])
+  const isDisable = useSelector((state)=>{return state.drawerSlice.drawerFormDisable})
 
   // fetch status
   const { data, isLoading, error } = useQuery({queryKey:["getSatatus"], queryFn:async () => {
@@ -75,13 +76,14 @@ console.log("getSatatusData",data)
               dispatch(addEmployeeName(e.target.value));
             }}
             value={formData.EmployeeName}
+            disabled={isDisable}
           />
         </div>
         {/* empoyee name end here*/}
 
         {/* empoyee status goes here*/}
         <div className="form__employeeStatus" style={{ marginTop: "1rem" }}>
-          <Select value={formData.EmployeeStatus} options={data} placeholder={"Employee Status"} className="E__Form__EStatus" onChange={(e)=>{dispatch(addEmployeeStatus(e))}}/>
+          <Select disabled={isDisable} value={formData.EmployeeStatus} options={data} placeholder={"Employee Status"} className="E__Form__EStatus" onChange={(e)=>{dispatch(addEmployeeStatus(e))}}/>
         </div>
         {/* empoyee status end here*/}
 
@@ -94,6 +96,7 @@ console.log("getSatatusData",data)
             placeholder="Joining Date"
             name="JoiningDate"
             className="E__Form__Date"
+            disabled={isDisable}
             onChange={(e) => {
               changeDate(e, "JoiningDate");
             }}
@@ -102,6 +105,7 @@ console.log("getSatatusData",data)
           <DatePicker
             placeholder="Birth Date"
             name="BirthDate"
+            disabled={isDisable}
             className="E__Form__Date"
             onChange={(e) => {
               changeDate(e, "BirthDate");
@@ -115,6 +119,7 @@ console.log("getSatatusData",data)
         <div className="form__employeeSkills" style={{ marginTop: "1rem" }}>
           <Input
             placeholder="Skills"
+            disabled={isDisable}
             onChange={(e) => {
               dispatch(addSkills(e.target.value));
             }}
@@ -127,6 +132,7 @@ console.log("getSatatusData",data)
         <div className="form__salaryDetail" style={{ marginTop: "1rem" }}>
           <Input
             placeholder="Salary Detail"
+            disabled={isDisable}
             type="number"
             onChange={(e) => {
               dispatch(addSalaryDetails(e.target.value));
@@ -140,6 +146,7 @@ console.log("getSatatusData",data)
         <div className="form__employeeAddress" style={{ marginTop: "1rem" }}>
           <Input
             placeholder="Address and Detail"
+            disabled={isDisable}
             onChange={(e) => {
               dispatch(addAddress(e.target.value));
             }}
@@ -148,7 +155,7 @@ console.log("getSatatusData",data)
         </div>
         {/* address address end here*/}
 
-        <div className="form__button" style={{ marginTop: "2rem" }}>
+        <div className="form__button" style={isDisable?{display:"none"}:{ marginTop: "2rem" }}>
           <Button className="form__mainBtn" disabled={mutation.isPending} onClick={()=>{mutation.mutate(formData)}}>Create</Button>
         </div>
       </div>

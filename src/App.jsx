@@ -11,7 +11,7 @@ function App() {
     <React.Fragment>
       <Fluid>
         <div>
-          <Drawer isOpen={isOpen} heading={"Create Employee"} label={<>Create <UserAddOutlined /></>}>
+          <Drawer isOpen={isOpen} heading={"Employee Form"} label={<>Create <UserAddOutlined /></>}>
             <EForm/>
           </Drawer>
           <Drawer heading={"Bulk Upload"} label={<>Bulk Upload <UploadOutlined /></>}  btnStyles={{marginLeft:"1rem",background:"var(--dark)"}}>

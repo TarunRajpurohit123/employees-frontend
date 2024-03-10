@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { fetchAllEmployee } from "../../api/api";
 import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
-import { toggleDrawer } from "../../store/slices/drawerSlice";
+import { diableFormFunc, toggleDrawer } from "../../store/slices/drawerSlice";
 import { useDispatch } from "react-redux";
 import { updateEmployeeState } from "../../store/slices/employeeSlice";
 
@@ -87,6 +87,7 @@ const ETable = () => {
       SalaryDetails: data.SalaryDetails,
       Address: data.Address,
     }));
+    dispatch(diableFormFunc(true))
     dispatch(toggleDrawer(true));
   };
   const { data, isLoading, error } = useQuery({
