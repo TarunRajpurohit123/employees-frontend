@@ -1,9 +1,18 @@
-import { Button, Table } from "antd";
+import { Button, Drawer, Table } from "antd";
 import "./table.css";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { fetchAllEmployee } from "../../api/api";
 import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
+import EForm from "../Form/EForm";
+
+const fetchData = async () => {
+  const response = await axios.get(fetchAllEmployee);
+  let customData = [];
+  return response.data.data;
+};
+
+const viewData = (data) => {};
 
 const columns = [
   {
@@ -49,21 +58,20 @@ const columns = [
   {
     title: "Actions",
     key: "Actions",
-    render: () => (
+    render: (data) => (
       <>
-        <EyeOutlined  className="acts act__eye"/>
-        <EditOutlined  className="acts act__edit"/>
-        <DeleteOutlined  className="acts act__delete"/>
+        <EyeOutlined
+          className="acts act__eye"
+          onClick={() => {
+            viewData(data);
+          }}
+        />
+        <EditOutlined className="acts act__edit" />
+        <DeleteOutlined className="acts act__delete" />
       </>
     ),
   },
 ];
-
-const fetchData = async () => {
-  const response = await axios.get(fetchAllEmployee);
-  let customData = [];
-  return response.data.data;
-};
 
 const ETable = () => {
   const { data, isLoading, error } = useQuery({

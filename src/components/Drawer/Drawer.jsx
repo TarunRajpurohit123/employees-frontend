@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Drawer } from 'antd';
+import { useSelector } from 'react-redux';
 const EDrawer = ({label,children,btnStyles,heading}) => {
   const [open, setOpen] = useState(false);
   const showDrawer = () => {
@@ -13,7 +14,7 @@ const EDrawer = ({label,children,btnStyles,heading}) => {
       <Button style={btnStyles} type="primary" onClick={showDrawer}>
         {label}
       </Button>
-      <Drawer title={heading} onClose={onClose} open={open}>
+      <Drawer  title={heading} onClose={onClose} open={open}>
         {children}
       </Drawer>
     </>
