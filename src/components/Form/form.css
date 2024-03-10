@@ -2,3 +2,6 @@
     background-color: var(--primary) !important;
     color: var(--pure) !important;
 }
+.E__Form__Date{
+    width: 49%;
+}
