@@ -1,11 +1,14 @@
 import { Button, Table } from "antd";
 import "./table.css";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { fetchAllEmployee } from "../../api/api";
 
 const columns = [
   {
     title: "EmployeeId",
-    dataIndex: "EmployeeId",
-    key: "EmployeeId",
+    dataIndex: "id",
+    key: "id",
   },
   {
     title: "Employee Name",
@@ -14,8 +17,8 @@ const columns = [
   },
   {
     title: "Employee Status",
-    dataIndex: "EmployeeStatus",
-    key: "EmployeeStatus",
+    dataIndex: ['employeeStatus', 'status'],
+    key: ['employeeStatus', 'status'],
   },
   {
    title: "Joining Date",
@@ -34,8 +37,8 @@ const columns = [
  },
  {
    title: "Salary Details",
-   dataIndex: "SalaryDetail",
-   key: "SalaryDetail",
+   dataIndex: "SalaryDetails",
+   key: "SalaryDetails",
  },
  {
    title: "Address",
@@ -49,10 +52,20 @@ const columns = [
  },
 ];
 
+const fetchData = async() => {
+  const response = await axios.get(fetchAllEmployee);
+  let customData=[]
+  return response.data.data;
+}
+
+
 const ETable = () => {
+  const { data, isLoading, error } = useQuery({queryKey:["getAllEmployees"], queryFn:fetchData});
+console.log("allEmployeeData",data)
+
   return (
     <>
-      <Table className="E__table" columns={columns} dataSource={[]}></Table>
+      <Table size={3} className="E__table" columns={columns} dataSource={data}></Table>
     </>
   );
 };
