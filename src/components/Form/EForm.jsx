@@ -14,7 +14,13 @@ import {
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios"
 import { createEmployee, getStatus } from "../../api/api";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { convertToAntDatePickerDate } from "../../helpers/formateDate";
+
+const dateFormat = 'MM-DD-YYYY';
+dayjs.extend(customParseFormat);
 
 const EForm = () => {
   // states
@@ -91,7 +97,7 @@ console.log("getSatatusData",data)
             onChange={(e) => {
               changeDate(e, "JoiningDate");
             }}
-            value={formData.JoiningDate}
+            value={dayjs(convertToAntDatePickerDate(formData.JoiningDate),dateFormat)}
           />
           <DatePicker
             placeholder="Birth Date"
@@ -100,7 +106,7 @@ console.log("getSatatusData",data)
             onChange={(e) => {
               changeDate(e, "BirthDate");
             }}
-            value={formData.BirthDate}
+            value={dayjs(convertToAntDatePickerDate(formData.BirthDate),dateFormat)}
           />
         </div>
         {/* empoyee joining end here*/}

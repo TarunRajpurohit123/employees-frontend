@@ -3,8 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   EmployeeName:null,
   EmployeeStatus:null,
-  JoiningDate:null,
-  BirthDate:null,
+  JoiningDate:"00-00-0000",
+  BirthDate:"00-00-0000",
   Skills:null,
   SalaryDetails:null,
   Address:null,
@@ -38,8 +38,6 @@ export const employeeSlice = createSlice({
     clearAll: (state, action) => {
       state.EmployeeName = null;
       state.EmployeeStatus = null;
-      state.JoiningDate = null;
-      state.BirthDate = null;
       state.Skills = null;
       state.SalaryDetails = null;
       state.Address = null;
