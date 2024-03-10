@@ -18,7 +18,7 @@ export const employeeSlice = createSlice({
       state.EmployeeName = action.payload;
     },
     addEmployeeStatus: (state, action) => {
-      state.EmployeeStatus = action.payload;
+      state.EmployeeStatus = Number(action.payload);
     },
     addJoiningDate: (state, action) => {
       state.JoiningDate = action.payload;
