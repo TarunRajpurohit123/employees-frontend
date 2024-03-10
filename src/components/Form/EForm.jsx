@@ -1,4 +1,4 @@
-import { Button, DatePicker, Input, Select } from "antd";
+import { Alert, Button, DatePicker, Input, Select } from "antd";
 import "./form.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -9,10 +9,11 @@ import {
   addJoiningDate,
   addSalaryDetails,
   addSkills,
+  clearAll,
 } from "../../store/slices/employeeSlice";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios"
-import { getStatus } from "../../api/api";
+import { createEmployee, getStatus } from "../../api/api";
 import { useEffect, useState } from "react";
 
 const EForm = () => {
@@ -28,6 +29,21 @@ const EForm = () => {
     const response = await axios.get(`${getStatus}`);
     return response.data.data;
   }});
+
+  // Mutations
+  const mutation = useMutation({
+    mutationFn: (data) => {
+      return axios.post(createEmployee,data);
+    },
+    onSuccess:(e)=>{
+      dispatch(clearAll());
+      alert("employee saved successfully")
+    },
+    onError: (e) => {
+      console.log("onError",e?.response?.data?.message)
+      alert(e?.response?.data?.message?e?.response?.data?.message:"something went wrong")
+    }
+  })
 
 console.log("getSatatusData",data)
     
@@ -52,13 +68,14 @@ console.log("getSatatusData",data)
             onChange={(e) => {
               dispatch(addEmployeeName(e.target.value));
             }}
+            value={formData.EmployeeName}
           />
         </div>
         {/* empoyee name end here*/}
 
         {/* empoyee status goes here*/}
         <div className="form__employeeStatus" style={{ marginTop: "1rem" }}>
-          <Select options={data} placeholder={"Employee Status"} className="E__Form__EStatus" onChange={(e)=>{dispatch(addEmployeeStatus(e))}}/>
+          <Select value={formData.EmployeeStatus} options={data} placeholder={"Employee Status"} className="E__Form__EStatus" onChange={(e)=>{dispatch(addEmployeeStatus(e))}}/>
         </div>
         {/* empoyee status end here*/}
 
@@ -74,6 +91,7 @@ console.log("getSatatusData",data)
             onChange={(e) => {
               changeDate(e, "JoiningDate");
             }}
+            value={formData.JoiningDate}
           />
           <DatePicker
             placeholder="Birth Date"
@@ -82,6 +100,7 @@ console.log("getSatatusData",data)
             onChange={(e) => {
               changeDate(e, "BirthDate");
             }}
+            value={formData.BirthDate}
           />
         </div>
         {/* empoyee joining end here*/}
@@ -93,6 +112,7 @@ console.log("getSatatusData",data)
             onChange={(e) => {
               dispatch(addSkills(e.target.value));
             }}
+            value={formData.Skills}
           />
         </div>
         {/* empoyee skill end here*/}
@@ -105,6 +125,7 @@ console.log("getSatatusData",data)
             onChange={(e) => {
               dispatch(addSalaryDetails(e.target.value));
             }}
+            value={formData.SalaryDetails}
           />
         </div>
         {/* empoyee salary end here*/}
@@ -116,12 +137,13 @@ console.log("getSatatusData",data)
             onChange={(e) => {
               dispatch(addAddress(e.target.value));
             }}
+            value={formData.Address}
           />
         </div>
         {/* address address end here*/}
 
         <div className="form__button" style={{ marginTop: "2rem" }}>
-          <Button className="form__mainBtn">Create</Button>
+          <Button className="form__mainBtn" disabled={mutation.isPending} onClick={()=>{mutation.mutate(formData)}}>Create</Button>
         </div>
       </div>
     </>
