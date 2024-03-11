@@ -4,6 +4,7 @@ import { Button } from "antd";
 import { DownloadOutlined, UploadOutlined, UserAddOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import fileDownload from "js-file-download";
+import ChartComponent from "./components/ChartComponent/ChartComponent";
 
 function App() {
   const isOpen = useSelector((state)=>{return state.drawerSlice});
@@ -29,6 +30,13 @@ function App() {
           <Button style={{marginLeft:"1rem"}} onClick={()=>{downloadFile();}}>Demo Csv <DownloadOutlined/></Button>
         </div>
         <Table />
+
+        {/* chart goes here */}
+        <section className="charts__section">
+          <ChartComponent chartType={"bar"}/>
+        </section>
+        {/* chart end here */}
+
       </Fluid>
     </React.Fragment>
   );
