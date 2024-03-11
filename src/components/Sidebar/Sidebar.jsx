@@ -14,14 +14,14 @@ function getItem(label, key, icon, children, type) {
   };
 }
 const items = [
-  getItem(<Link to={"/"}>Dashboard</Link>, 'dashboard',<AppstoreOutlined />),
-  getItem(<Link to={"/employee"}>Employees</Link>, 'employees',<UserOutlined />),
+  // getItem(<Link to={"/"}>Dashboard</Link>, 'dashboard',<AppstoreOutlined />),
+  getItem(<Link to={"/"}>Employees</Link>, 'employees',<UserOutlined />),
 ];
 const Sidebar = () => {
   return (
     <Menu
       className='E__sidebar'
-      defaultSelectedKeys={['dashboard']}
+      defaultSelectedKeys={['employees']}
       defaultOpenKeys={['sub1']}
       mode="inline"
       items={items}

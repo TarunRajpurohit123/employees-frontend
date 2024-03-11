@@ -12,10 +12,6 @@ const queryClient = new QueryClient();
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Dashboard />,
-  },
-  {
-    path: "/employee",
     element: <App />,
   },
 ]);
