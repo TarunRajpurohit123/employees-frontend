@@ -7,7 +7,7 @@ import {
   Table,
   Uploader,
 } from "./components";
-import { Button } from "antd";
+import { Button, Select } from "antd";
 import {
   DownloadOutlined,
   UploadOutlined,
@@ -22,15 +22,21 @@ function App() {
   const isOpen = useSelector((state) => {
     return state.drawerSlice;
   });
-  const [statusData,setStatusData] = useState([]);
+  const [statusData, setStatusData] = useState([]);
+  const [chartType, setChartType] = useState({
+    status:"line",
+  });
 
   // fetch all chart related data
-  useEffect(()=>{
-    axios.get(statusChart).then((statusData)=>{
-      console.log("statusData",statusData)
-      setStatusData(statusData.data.data.chartData)
-    }).catch((error)=>{})
-  },[])
+  useEffect(() => {
+    axios
+      .get(statusChart)
+      .then((statusData) => {
+        console.log("statusData", statusData);
+        setStatusData(statusData.data.data.chartData);
+      })
+      .catch((error) => {});
+  }, []);
 
   // download demo csv
   // download excle file
@@ -80,15 +86,21 @@ function App() {
 
         {/* chart goes here */}
         <section className="charts__section flex justify-between flex-wrap">
-          <div style={{width:"49%"}} className="primary-shadow p-md">
-            <h1>Status Charts:</h1>
-            <ChartComponent data={statusData} chartType={"bar"} />
+          <div style={{ width: "49%" }} className="primary-shadow p-md">
+            <div className="flex justify-between">
+              <h1>Status Charts:</h1>
+              <Select options={[{ value: "bar", label: "Bar Chart" },{ value: "line", label: "Line Chart" },{ value: "pie", label: "Pie Chart" }]} placeholder="Chart Type" onChange={(e)=>{setChartType({...chartType,status:e})}}/>
+            </div>
+            <ChartComponent data={statusData} chartType={chartType.status} />
           </div>
-          <div style={{width:"49%"}} className="primary-shadow p-md">
+          <div style={{ width: "49%" }} className="primary-shadow p-md">
             <h1>Location Charts:</h1>
             <ChartComponent chartType={"line"} />
           </div>
-          <div style={{width:"49%",marginTop:"2rem"}} className="primary-shadow p-md">
+          <div
+            style={{ width: "49%", marginTop: "2rem" }}
+            className="primary-shadow p-md"
+          >
             <h1>Location Charts:</h1>
             <ChartComponent chartType={"pie"} />
           </div>

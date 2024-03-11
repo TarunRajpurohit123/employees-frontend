@@ -12,10 +12,10 @@ const ChartComponent = ({ chartType,data }) => {
       chart = <AntBar data={data} xField="status" yField={["count","percentage"]} />;
       break;
     case 'line':
-      chart = <AntLine data={data} xField="category" yField="value" />;
+      chart = <AntLine data={data} xField="status" yField={["count","percentage"]} />;
       break;
     case 'pie':
-      chart = <AntPie data={data} angleField="value" colorField="category" />;
+      chart = <AntPie data={data} xField="status" yField={["count","percentage"]} colorField={"status"}/>;
       break;
     default:
       chart = <div>No chart selected</div>;
