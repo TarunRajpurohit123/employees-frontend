@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   open:false,
+  open2:false,
   drawerFormDisable:false,
   drawerStatus:"CREATE",
   editEmployee:"",
@@ -13,6 +14,9 @@ export const drawerSlice = createSlice({
   reducers: {
     toggleDrawer: (state, action) => {
       state.open = action.payload;
+    },
+    toggleDrawer2: (state, action) => {
+      state.open2 = action.payload;
     },
     diableFormFunc: (state, action) => {
       state.drawerFormDisable = action.payload;
@@ -27,6 +31,6 @@ export const drawerSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const {toggleDrawer,diableFormFunc,addDrawerStatus,addEditEmployee} = drawerSlice.actions;
+export const {toggleDrawer,diableFormFunc,addDrawerStatus,addEditEmployee,toggleDrawer2} = drawerSlice.actions;
 
 export default drawerSlice.reducer;

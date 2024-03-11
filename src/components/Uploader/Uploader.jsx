@@ -1,6 +1,8 @@
 import React from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
+import axios from 'axios';
+import { bulkUpload } from '../../api/api';
 const { Dragger } = Upload;
 const props = {
   name: 'file',
@@ -19,6 +21,7 @@ const props = {
   },
   onDrop(e) {
     console.log('Dropped files', e.dataTransfer.files);
+    axios.post(bulkUpload)
   },
 };
 const Uploader = () => (

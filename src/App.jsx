@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import fileDownload from "js-file-download";
 
 function App() {
-  const isOpen = useSelector((state)=>{return state.drawerSlice.open});
+  const isOpen = useSelector((state)=>{return state.drawerSlice});
 
   // download demo csv
   // download excle file
@@ -20,10 +20,10 @@ function App() {
     <React.Fragment>
       <Fluid>
         <div>
-          <Drawer isOpen={isOpen} heading={"Employee Form"} label={<>Create <UserAddOutlined /></>}>
+          <Drawer isOpen={isOpen.open} heading={"Employee Form"} label={<>Create <UserAddOutlined /></>}>
             <EForm/>
           </Drawer>
-          <Drawer heading={"Bulk Upload"} label={<>Bulk Upload <UploadOutlined /></>}  btnStyles={{marginLeft:"1rem",background:"var(--dark)"}}>
+          <Drawer isOpen={isOpen.open2} heading={"Bulk Upload"} label={<>Bulk Upload <UploadOutlined /></>}  btnStyles={{marginLeft:"1rem",background:"var(--dark)"}}>
             <Uploader/>
           </Drawer>
           <Button style={{marginLeft:"1rem"}} onClick={()=>{downloadFile();}}>Demo Csv <DownloadOutlined/></Button>

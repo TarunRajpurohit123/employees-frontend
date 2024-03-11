@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Button, Drawer } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { addDrawerStatus, diableFormFunc, toggleDrawer } from '../../store/slices/drawerSlice';
+import { addDrawerStatus, diableFormFunc, toggleDrawer, toggleDrawer2 } from '../../store/slices/drawerSlice';
 import { updateEmployeeState } from '../../store/slices/employeeSlice';
 const EDrawer = ({label,children,btnStyles,heading,isOpen}) => {
   const dispatch = useDispatch();
   const showDrawer = () => {
     dispatch(toggleDrawer(true))
+    // dispatch(toggleDrawer2(true))
   };
   const onClose = () => {
     dispatch(toggleDrawer(false))

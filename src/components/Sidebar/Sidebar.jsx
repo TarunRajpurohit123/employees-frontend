@@ -2,7 +2,7 @@ import React from 'react';
 import { AppstoreOutlined,UserOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import "./sidebar.css";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 function getItem(label, key, icon, children, type) {
   return {
@@ -18,6 +18,8 @@ const items = [
   getItem(<Link to={"/employee"}>Employees</Link>, 'employees',<UserOutlined />),
 ];
 const Sidebar = () => {
+  const location = useLocation();
+  console.log("location",location.pathname)
   return (
     <Menu
       className='E__sidebar'

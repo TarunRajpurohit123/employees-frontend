@@ -4,6 +4,7 @@ const createEmployee = `${D}/employe`;
 const fetchAllEmployee =`${D}/employe/data/all`
 const deleteEmployee =`${D}/employe`
 const editEmployee =`${D}/employe`
+const bulkUpload = `${D}/employe/bulk-upload`
 
 
-export {getStatus,createEmployee,fetchAllEmployee,deleteEmployee,editEmployee};
+export {getStatus,createEmployee,fetchAllEmployee,deleteEmployee,editEmployee,bulkUpload};
