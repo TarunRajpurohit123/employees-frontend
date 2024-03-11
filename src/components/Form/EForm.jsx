@@ -12,14 +12,16 @@ import {
   clearAll,
 } from "../../store/slices/employeeSlice";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from "axios"
+import axios from "axios";
 import { createEmployee, editEmployee, getStatus } from "../../api/api";
 import { useState } from "react";
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import { convertToAntDatePickerDate } from "../../helpers/formateDate";
+import { fetchData } from "../Table/Table";
+import { addTableData } from "../../store/slices/tableSlice";
 
-const dateFormat = 'MM-DD-YYYY';
+const dateFormat = "MM-DD-YYYY";
 dayjs.extend(customParseFormat);
 
 const EForm = () => {
@@ -31,50 +33,70 @@ const EForm = () => {
     return state.drawerSlice;
   });
   const dispatch = useDispatch();
-  const [allStatus,setAllStatus] = useState([])
-  const isDisable = useSelector((state)=>{return state.drawerSlice.drawerFormDisable})
+  const [allStatus, setAllStatus] = useState([]);
+  const isDisable = useSelector((state) => {
+    return state.drawerSlice.drawerFormDisable;
+  });
 
   // fetch status
-  const { data, isLoading, error } = useQuery({queryKey:["getSatatus"], queryFn:async () => {
-    const response = await axios.get(`${getStatus}`);
-    return response.data.data;
-  }});
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["getSatatus"],
+    queryFn: async () => {
+      const response = await axios.get(`${getStatus}`);
+      return response.data.data;
+    },
+  });
 
   // Mutations
   const mutation = useMutation({
     mutationFn: (data) => {
-      if(drawerRelated.drawerStatus==="CREATE"){
-        return axios.post(createEmployee,data);
-      }else{
-        console.log("EditData",data)
-        return axios.put(`${editEmployee}/${drawerRelated.editEmployee}`,{
-          EmployeeName:data.EmployeeName,
+      if (drawerRelated.drawerStatus === "CREATE") {
+        return axios.post(createEmployee, data);
+      } else {
+        console.log("EditData", data);
+        return axios.put(`${editEmployee}/${drawerRelated.editEmployee}`, {
+          EmployeeName: data.EmployeeName,
           employeeStatusId: Number(data.EmployeeStatus),
-          JoiningDate:data.JoiningDate,
-          BirthDate:data.BirthDate,
-          Skills:data.Skills,
-          SalaryDetails:data.SalaryDetails,
-          Address:data.Address,
-        })
+          JoiningDate: data.JoiningDate,
+          BirthDate: data.BirthDate,
+          Skills: data.Skills,
+          SalaryDetails: data.SalaryDetails,
+          Address: data.Address,
+        });
       }
     },
-    onSuccess:(e)=>{
-      if(drawerRelated.drawerStatus==="CREATE"){
+    onSuccess: (e) => {
+      if (drawerRelated.drawerStatus === "CREATE") {
         dispatch(clearAll());
-        alert("employee saved successfully")
-        
-      }else{
-        alert("employee updated successfully")
+        alert("employee saved successfully");
+        const res = fetchData();
+        res
+          .then((single) => {
+            dispatch(addTableData(single));
+          })
+          .catch((err) => {});
+      } else {
+        alert("employee updated successfully");
+        const res = fetchData();
+        res
+          .then((single) => {
+            dispatch(addTableData(single));
+          })
+          .catch((err) => {});
       }
     },
     onError: (e) => {
-      console.log("onError",e?.response?.data?.message)
-      alert(e?.response?.data?.message?e?.response?.data?.message:"something went wrong")
-    }
-  })
+      console.log("onError", e?.response?.data?.message);
+      alert(
+        e?.response?.data?.message
+          ? e?.response?.data?.message
+          : "something went wrong"
+      );
+    },
+  });
 
-console.log("getSatatusData",data)
-    
+  console.log("getSatatusData", data);
+
   // when user choose date from calender
   const changeDate = (e, type) => {
     console.log("DateEvent", e, `${e.$M}-${e.$D}-${e.$y}`);
@@ -104,7 +126,16 @@ console.log("getSatatusData",data)
 
         {/* empoyee status goes here*/}
         <div className="form__employeeStatus" style={{ marginTop: "1rem" }}>
-          <Select disabled={isDisable} value={formData.EmployeeStatus} options={data} placeholder={"Employee Status"} className="E__Form__EStatus" onChange={(e)=>{dispatch(addEmployeeStatus(e))}}/>
+          <Select
+            disabled={isDisable}
+            value={formData.EmployeeStatus}
+            options={data}
+            placeholder={"Employee Status"}
+            className="E__Form__EStatus"
+            onChange={(e) => {
+              dispatch(addEmployeeStatus(e));
+            }}
+          />
         </div>
         {/* empoyee status end here*/}
 
@@ -121,7 +152,10 @@ console.log("getSatatusData",data)
             onChange={(e) => {
               changeDate(e, "JoiningDate");
             }}
-            value={dayjs(convertToAntDatePickerDate(formData.JoiningDate),dateFormat)}
+            value={dayjs(
+              convertToAntDatePickerDate(formData.JoiningDate),
+              dateFormat
+            )}
           />
           <DatePicker
             placeholder="Birth Date"
@@ -131,7 +165,10 @@ console.log("getSatatusData",data)
             onChange={(e) => {
               changeDate(e, "BirthDate");
             }}
-            value={dayjs(convertToAntDatePickerDate(formData.BirthDate),dateFormat)}
+            value={dayjs(
+              convertToAntDatePickerDate(formData.BirthDate),
+              dateFormat
+            )}
           />
         </div>
         {/* empoyee joining end here*/}
@@ -176,8 +213,19 @@ console.log("getSatatusData",data)
         </div>
         {/* address address end here*/}
 
-        <div className="form__button" style={isDisable?{display:"none"}:{ marginTop: "2rem" }}>
-          <Button className="form__mainBtn" disabled={mutation.isPending} onClick={()=>{mutation.mutate(formData)}}>Submit</Button>
+        <div
+          className="form__button"
+          style={isDisable ? { display: "none" } : { marginTop: "2rem" }}
+        >
+          <Button
+            className="form__mainBtn"
+            disabled={mutation.isPending}
+            onClick={() => {
+              mutation.mutate(formData);
+            }}
+          >
+            Submit
+          </Button>
         </div>
       </div>
     </>

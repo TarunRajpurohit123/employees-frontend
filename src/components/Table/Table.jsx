@@ -5,9 +5,10 @@ import axios from "axios";
 import { deleteEmployee, fetchAllEmployee } from "../../api/api";
 import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { addDrawerStatus, addEditEmployee, diableFormFunc, toggleDrawer } from "../../store/slices/drawerSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateEmployeeState } from "../../store/slices/employeeSlice";
 import { useEffect, useState } from "react";
+import { addTableData } from "../../store/slices/tableSlice";
 
 const fetchData = async () => {
   const response = await axios.get(fetchAllEmployee);
@@ -15,7 +16,8 @@ const fetchData = async () => {
 };
 
 const ETable = () => {
-  const [tableData,setTableData] = useState([]);
+  const dispatch = useDispatch();
+  const tableData = useSelector((state)=>{return state.tableSlice.data})
   const mutation = useMutation({
     mutationFn: (data) => {
       return axios.delete(`${deleteEmployee}/${data.id}`, {});
@@ -25,11 +27,10 @@ const ETable = () => {
       const responseData = fetchData();
       console.log("responseData-",responseData)
       responseData.then((res)=>{
-        setTableData(res)
+        dispatch(addTableData(res));
       }).catch((err)=>{})
     }
   });
-  const dispatch = useDispatch();
 
   // cancle delete operation
   const cancel = (e) => {
@@ -156,7 +157,8 @@ const ETable = () => {
   });
   
   useEffect(()=>{
-    setTableData(data)
+    // setTableData(data)
+    dispatch(addTableData(data));
   },[data])
 
   return (
@@ -172,3 +174,4 @@ const ETable = () => {
 };
 
 export default ETable;
+export {fetchData}
