@@ -4,9 +4,10 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { deleteEmployee, fetchAllEmployee } from "../../api/api";
 import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
-import { diableFormFunc, toggleDrawer } from "../../store/slices/drawerSlice";
+import { addDrawerStatus, addEditEmployee, diableFormFunc, toggleDrawer } from "../../store/slices/drawerSlice";
 import { useDispatch } from "react-redux";
 import { updateEmployeeState } from "../../store/slices/employeeSlice";
+import { useEffect, useState } from "react";
 
 const fetchData = async () => {
   const response = await axios.get(fetchAllEmployee);
@@ -14,10 +15,19 @@ const fetchData = async () => {
 };
 
 const ETable = () => {
+  const [tableData,setTableData] = useState([]);
   const mutation = useMutation({
     mutationFn: (data) => {
       return axios.delete(`${deleteEmployee}/${data.id}`, {});
     },
+    onSuccess: (data) => {
+      alert("Employee deleted successfully");
+      const responseData = fetchData();
+      console.log("responseData-",responseData)
+      responseData.then((res)=>{
+        setTableData(res)
+      }).catch((err)=>{})
+    }
   });
   const dispatch = useDispatch();
 
@@ -84,7 +94,9 @@ const ETable = () => {
               viewData(data);
             }}
           />
-          <EditOutlined className="acts act__edit" />
+          <EditOutlined className="acts act__edit" onClick={() => {
+              editData(data);
+            }}/>
           <Popconfirm
             title="Delete the employee"
             description="Are you sure to delete this employee?"
@@ -101,6 +113,8 @@ const ETable = () => {
       ),
     },
   ];
+
+  // view employee
   const viewData = (data) => {
     console.log("viewData", data);
     dispatch(
@@ -117,11 +131,33 @@ const ETable = () => {
     dispatch(diableFormFunc(true));
     dispatch(toggleDrawer(true));
   };
+
+  // delete employee 
+  const editData = (data) => {
+    dispatch(
+      updateEmployeeState({
+        EmployeeName: data.EmployeeName,
+        EmployeeStatus: data.employeeStatusId,
+        JoiningDate: data.JoiningDate,
+        BirthDate: data.BirthDate,
+        Skills: data.Skills,
+        SalaryDetails: data.SalaryDetails,
+        Address: data.Address,
+      })
+    );
+    dispatch(addEditEmployee(data.id));
+    dispatch(addDrawerStatus("EDIT"));
+    dispatch(toggleDrawer(true));
+  }
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["getAllEmployees"],
     queryFn: fetchData,
   });
-  console.log("allEmployeeData", data);
+  
+  useEffect(()=>{
+    setTableData(data)
+  },[data])
 
   return (
     <>
@@ -129,7 +165,7 @@ const ETable = () => {
         size={3}
         className="E__table"
         columns={columns}
-        dataSource={data}
+        dataSource={tableData}
       ></Table>
     </>
   );

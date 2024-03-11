@@ -17,7 +17,7 @@ function App() {
           <Drawer heading={"Bulk Upload"} label={<>Bulk Upload <UploadOutlined /></>}  btnStyles={{marginLeft:"1rem",background:"var(--dark)"}}>
             <Uploader/>
           </Drawer>
-          <Button style={{marginLeft:"1rem"}}>Download Csv <DownloadOutlined/></Button>
+          <Button style={{marginLeft:"1rem"}}>Demo Csv <DownloadOutlined/></Button>
         </div>
         <Table />
       </Fluid>

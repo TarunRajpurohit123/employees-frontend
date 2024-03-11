@@ -3,6 +3,7 @@ const getStatus = `${D}/status`;
 const createEmployee = `${D}/employe`;
 const fetchAllEmployee =`${D}/employe/data/all`
 const deleteEmployee =`${D}/employe`
+const editEmployee =`${D}/employe`
 
 
-export {getStatus,createEmployee,fetchAllEmployee,deleteEmployee};
+export {getStatus,createEmployee,fetchAllEmployee,deleteEmployee,editEmployee};

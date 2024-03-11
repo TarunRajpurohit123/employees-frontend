@@ -13,7 +13,7 @@ import {
 } from "../../store/slices/employeeSlice";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios"
-import { createEmployee, getStatus } from "../../api/api";
+import { createEmployee, editEmployee, getStatus } from "../../api/api";
 import { useState } from "react";
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -26,6 +26,9 @@ const EForm = () => {
   // states
   const formData = useSelector((state) => {
     return state.employeeSlice;
+  });
+  const drawerRelated = useSelector((state) => {
+    return state.drawerSlice;
   });
   const dispatch = useDispatch();
   const [allStatus,setAllStatus] = useState([])
@@ -40,11 +43,29 @@ const EForm = () => {
   // Mutations
   const mutation = useMutation({
     mutationFn: (data) => {
-      return axios.post(createEmployee,data);
+      if(drawerRelated.drawerStatus==="CREATE"){
+        return axios.post(createEmployee,data);
+      }else{
+        console.log("EditData",data)
+        return axios.put(`${editEmployee}/${drawerRelated.editEmployee}`,{
+          EmployeeName:data.EmployeeName,
+          employeeStatusId: Number(data.EmployeeStatus),
+          JoiningDate:data.JoiningDate,
+          BirthDate:data.BirthDate,
+          Skills:data.Skills,
+          SalaryDetails:data.SalaryDetails,
+          Address:data.Address,
+        })
+      }
     },
     onSuccess:(e)=>{
-      dispatch(clearAll());
-      alert("employee saved successfully")
+      if(drawerRelated.drawerStatus==="CREATE"){
+        dispatch(clearAll());
+        alert("employee saved successfully")
+        
+      }else{
+        alert("employee updated successfully")
+      }
     },
     onError: (e) => {
       console.log("onError",e?.response?.data?.message)
@@ -156,7 +177,7 @@ console.log("getSatatusData",data)
         {/* address address end here*/}
 
         <div className="form__button" style={isDisable?{display:"none"}:{ marginTop: "2rem" }}>
-          <Button className="form__mainBtn" disabled={mutation.isPending} onClick={()=>{mutation.mutate(formData)}}>Create</Button>
+          <Button className="form__mainBtn" disabled={mutation.isPending} onClick={()=>{mutation.mutate(formData)}}>Submit</Button>
         </div>
       </div>
     </>
