@@ -66,7 +66,7 @@ function App() {
   // download excle file
   const downloadFile = () => {
     let data =
-      "EmployeeName,6,JoiningDate,BirthDate,Skills,5000,Address and other custom info";
+      "EmployeeName,employeeStatusId,JoiningDate,BirthDate,Skills,SalaryDetails,Address and other custom info";
     fileDownload(data, "demo-employee.csv");
   };
 

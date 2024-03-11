@@ -24,21 +24,10 @@ function Uploader({ open, setIsUploader }) {
             .post(bulkUpload, { data: results.data })
             .then((res) => {
               console.log("bulkUploadResponse", res);
-              setIsError(false);
-              setIsToast(true);
-              setTimeout(() => {
-                setIsToast(false);
-              }, 2000);
-              setMessage(res.data.message);
+              alert(res.data.message)
             })
             .catch((err) => {
-              setIsToast(true);
-              setIsError(true);
-              setTimeout(() => {
-                setIsToast(false);
-              }, 2000);
-              setMessage("please try again!");
-              console.log("bulkUploadResponse", err);
+              alert("Please Check Your CSV Something Went Wrong")
             });
         },
       });
