@@ -4,6 +4,7 @@ import Papa from "papaparse";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { bulkUpload } from "../../api/api";
+import { fetchData } from "../Table/Table";
 
 function Uploader({ open, setIsUploader }) {
   const [jsonArray, setJsonArray] = useState([]);
@@ -24,6 +25,7 @@ function Uploader({ open, setIsUploader }) {
             .post(bulkUpload, { data: results.data })
             .then((res) => {
               console.log("bulkUploadResponse", res);
+              fetchData()
               alert(res.data.message)
             })
             .catch((err) => {
