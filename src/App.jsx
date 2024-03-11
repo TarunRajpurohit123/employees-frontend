@@ -40,9 +40,17 @@ function App() {
   const fetchLocationChart = async () => {
     axios
       .get(`${statusChart}/location`)
+      .then((locationData) => {
+        console.log("locationChart", locationData.data.data.locationChartData);
+        setLocationData(locationData.data.data.locationChartData);
+      })
+      .catch((error) => {});
+  };
+  const fetchSalaryChart = async () => {
+    axios
+      .get(`${statusChart}/salary?gap=50`)
       .then((statusData) => {
-        console.log("locationChart", statusData.data.data.locationChartData);
-        setLocationData(statusData.data.data.locationChartData);
+        console.log("salarychart", statusData);
       })
       .catch((error) => {});
   };
@@ -50,6 +58,7 @@ function App() {
   // fetch all chart related data
   useEffect(() => {
     fetchStatusChart();
+    // fetchSalaryChart();
     fetchLocationChart();
   }, []);
 
@@ -57,7 +66,7 @@ function App() {
   // download excle file
   const downloadFile = () => {
     let data =
-      "EmployeeName,EmployeeStatus,JoiningDate,BirthDate,Skills,SalaryDetails,Address and other custom info";
+      "EmployeeName,6,JoiningDate,BirthDate,Skills,5000,Address and other custom info";
     fileDownload(data, "demo-employee.csv");
   };
 
@@ -68,6 +77,7 @@ function App() {
           <Drawer
             isOpen={isOpen.open}
             heading={"Employee Form"}
+            module={"form"}
             label={
               <>
                 Create <UserAddOutlined />
@@ -79,6 +89,7 @@ function App() {
           <Drawer
             isOpen={isOpen.open2}
             heading={"Bulk Upload"}
+            module={"uploader"}
             label={
               <>
                 Bulk Upload <UploadOutlined />

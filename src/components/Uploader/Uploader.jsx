@@ -1,39 +1,57 @@
-import React from 'react';
-import { InboxOutlined } from '@ant-design/icons';
-import { message, Upload } from 'antd';
-import axios from 'axios';
-import { bulkUpload } from '../../api/api';
-const { Dragger } = Upload;
-const props = {
-  name: 'file',
-  multiple: true,
-  action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
-  onChange(info) {
-    const { status } = info.file;
-    if (status !== 'uploading') {
-      console.log(info.file, info.fileList);
+import { FileUploader } from "react-drag-drop-files";
+import { useEffect, useState } from "react";
+import Papa from "papaparse";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { bulkUpload } from "../../api/api";
+
+function Uploader({ open, setIsUploader }) {
+  const [jsonArray, setJsonArray] = useState([]);
+  const [message, setMessage] = useState("");
+  const [isToast, setIsToast] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const dispatch = useDispatch();
+
+  //   when user upload csv file then it function will be execute
+  const handleChange = async (e) => {
+    console.log("File", e);
+    if (e) {
+      Papa.parse(e, {
+        complete: async function (results) {
+          console.log("Finish", results.data);
+          setJsonArray(results.data);
+          await axios
+            .post(bulkUpload, { data: results.data })
+            .then((res) => {
+              console.log("bulkUploadResponse", res);
+              setIsError(false);
+              setIsToast(true);
+              setTimeout(() => {
+                setIsToast(false);
+              }, 2000);
+              setMessage(res.data.message);
+            })
+            .catch((err) => {
+              setIsToast(true);
+              setIsError(true);
+              setTimeout(() => {
+                setIsToast(false);
+              }, 2000);
+              setMessage("please try again!");
+              console.log("bulkUploadResponse", err);
+            });
+        },
+      });
     }
-    if (status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === 'error') {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  },
-  onDrop(e) {
-    console.log('Dropped files', e.dataTransfer.files);
-    axios.post(bulkUpload)
-  },
-};
-const Uploader = () => (
-  <Dragger {...props}>
-    <p className="ant-upload-drag-icon">
-      <InboxOutlined />
-    </p>
-    <p className="ant-upload-text">Click or drag file to this area to upload</p>
-    <p className="ant-upload-hint">
-      Support for a single or bulk upload. Strictly prohibited from uploading company data or other
-      banned files.
-    </p>
-  </Dragger>
-);
+  };
+
+  return (
+    <>
+      <div className="uploader__body">
+        <FileUploader handleChange={handleChange} name="file" />
+      </div>
+    </>
+  );
+}
+
 export default Uploader;
