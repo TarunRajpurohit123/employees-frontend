@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { bulkUpload } from "../../api/api";
 import { fetchData } from "../Table/Table";
 
-function Uploader({ open, setIsUploader }) {
+function Uploader({ open, setIsUploader,fetchSalaryChart,fetchLocationChart,fetchStatusChart }) {
   const [jsonArray, setJsonArray] = useState([]);
   const [message, setMessage] = useState("");
   const [isToast, setIsToast] = useState(false);
@@ -26,6 +26,9 @@ function Uploader({ open, setIsUploader }) {
             .then((res) => {
               console.log("bulkUploadResponse", res);
               fetchData()
+              fetchStatusChart()
+              fetchLocationChart()
+              fetchSalaryChart()
               alert(res.data.message)
             })
             .catch((err) => {

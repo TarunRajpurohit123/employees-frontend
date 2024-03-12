@@ -24,7 +24,7 @@ import { addTableData } from "../../store/slices/tableSlice";
 const dateFormat = "MM-DD-YYYY";
 dayjs.extend(customParseFormat);
 
-const EForm = ({ fetchStatusChart,fetchLocationChart }) => {
+const EForm = ({ fetchStatusChart,fetchLocationChart,fetchSalaryChart }) => {
   // states
   const formData = useSelector((state) => {
     return state.employeeSlice;
@@ -72,6 +72,7 @@ const EForm = ({ fetchStatusChart,fetchLocationChart }) => {
         const res = fetchData();
         fetchStatusChart();
         fetchLocationChart();
+        fetchSalaryChart();
         res
           .then((single) => {
             dispatch(addTableData(single));
@@ -82,6 +83,7 @@ const EForm = ({ fetchStatusChart,fetchLocationChart }) => {
         const res = fetchData();
         fetchStatusChart();
         fetchLocationChart();
+        fetchSalaryChart();
         res
           .then((single) => {
             dispatch(addTableData(single));

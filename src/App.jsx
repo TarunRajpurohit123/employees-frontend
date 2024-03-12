@@ -90,6 +90,7 @@ function App() {
             <EForm
               fetchStatusChart={fetchStatusChart}
               fetchLocationChart={fetchLocationChart}
+              fetchSalaryChart={fetchSalaryChart}
             />
           </Drawer>
           <Drawer
@@ -103,7 +104,7 @@ function App() {
             }
             btnStyles={{ marginLeft: "1rem", background: "var(--dark)" }}
           >
-            <Uploader />
+            <Uploader fetchSalaryChart={fetchSalaryChart} fetchLocationChart={fetchLocationChart} fetchStatusChart={fetchStatusChart}/>
           </Drawer>
           <Button
             style={{ marginLeft: "1rem" }}
@@ -168,14 +169,26 @@ function App() {
             style={{ width: "49%", marginTop: "2rem" }}
             className="primary-shadow p-md"
           >
-            <div className="flex justify-between">
-              <h1>Location Charts:</h1>
+             <div className="flex justify-between">
+              <h1>Salary Charts:</h1>
+              <Select
+                value={chartType.salary}
+                options={[
+                  { value: "bar", label: "Bar Chart" },
+                  { value: "line", label: "Line Chart" },
+                  { value: "pie", label: "Pie Chart" },
+                ]}
+                placeholder="Chart Type"
+                onChange={(e) => {
+                  setChartType({ ...chartType, salary: e });
+                }}
+              />
             </div>
             <ChartComponent
               data={salaryData}
               xField={"range"}
               yField={["count", "percentage"]}
-              chartType={chartType.location}
+              chartType={chartType.salary}
             />
           </div>
         </section>
