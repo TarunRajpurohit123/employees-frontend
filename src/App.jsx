@@ -24,9 +24,11 @@ function App() {
   });
   const [statusData, setStatusData] = useState([]);
   const [locationData, setLocationData] = useState([]);
+  const [salaryData, setSalaryData] = useState([]);
   const [chartType, setChartType] = useState({
     status: "bar",
     location: "bar",
+    salary: "bar",
   });
 
   const fetchStatusChart = async () => {
@@ -48,9 +50,10 @@ function App() {
   };
   const fetchSalaryChart = async () => {
     axios
-      .get(`${statusChart}/salary?gap=50`)
+      .get(`${statusChart}/salary?gap=50000`)
       .then((statusData) => {
-        console.log("salarychart", statusData);
+        console.log("salarychart", statusData.data.salaryChartData);
+        setSalaryData(statusData.data.salaryChartData);
       })
       .catch((error) => {});
   };
@@ -58,7 +61,7 @@ function App() {
   // fetch all chart related data
   useEffect(() => {
     fetchStatusChart();
-    // fetchSalaryChart();
+    fetchSalaryChart();
     fetchLocationChart();
   }, []);
 
@@ -84,7 +87,10 @@ function App() {
               </>
             }
           >
-            <EForm fetchStatusChart={fetchStatusChart} fetchLocationChart={fetchLocationChart}/>
+            <EForm
+              fetchStatusChart={fetchStatusChart}
+              fetchLocationChart={fetchLocationChart}
+            />
           </Drawer>
           <Drawer
             isOpen={isOpen.open2}
@@ -165,7 +171,12 @@ function App() {
             <div className="flex justify-between">
               <h1>Location Charts:</h1>
             </div>
-            <ChartComponent chartType={"pie"} />
+            <ChartComponent
+              data={salaryData}
+              xField={"range"}
+              yField={["count", "percentage"]}
+              chartType={chartType.location}
+            />
           </div>
         </section>
         {/* chart end here */}
