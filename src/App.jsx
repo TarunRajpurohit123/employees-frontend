@@ -84,7 +84,7 @@ function App() {
               </>
             }
           >
-            <EForm />
+            <EForm fetchStatusChart={fetchStatusChart} fetchLocationChart={fetchLocationChart}/>
           </Drawer>
           <Drawer
             isOpen={isOpen.open2}

@@ -13,7 +13,7 @@ import {
 } from "../../store/slices/employeeSlice";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { createEmployee, editEmployee, getStatus } from "../../api/api";
+import { createEmployee, editEmployee, getStatus, statusChart } from "../../api/api";
 import { useState } from "react";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -24,7 +24,7 @@ import { addTableData } from "../../store/slices/tableSlice";
 const dateFormat = "MM-DD-YYYY";
 dayjs.extend(customParseFormat);
 
-const EForm = () => {
+const EForm = ({ fetchStatusChart,fetchLocationChart }) => {
   // states
   const formData = useSelector((state) => {
     return state.employeeSlice;
@@ -70,6 +70,8 @@ const EForm = () => {
         dispatch(clearAll());
         alert("employee saved successfully");
         const res = fetchData();
+        fetchStatusChart();
+        fetchLocationChart();
         res
           .then((single) => {
             dispatch(addTableData(single));
@@ -78,6 +80,8 @@ const EForm = () => {
       } else {
         alert("employee updated successfully");
         const res = fetchData();
+        fetchStatusChart();
+        fetchLocationChart();
         res
           .then((single) => {
             dispatch(addTableData(single));
